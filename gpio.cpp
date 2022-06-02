@@ -31,15 +31,18 @@ void Gpio::set(int pin, int state)
 
 void Gpio::set(int pattern)
 {
-    // 1011
-    // 0001
-    //------
-    // 0001
-    for (int pin : LEDS) {
-        int error = 0;
-        int state = pattern & 0001; // mask out LSB: state = 1, 1, 0, 1
-        if ((error = lgGpioWrite(m_handle, pin, state)) < 0)
-            throw lguErrorText(error);
-        pattern = pattern >> 1; // bit shift to the right: 1011, 0101, 0010, 0001
-    }
+        // 1011
+        // 0001
+        //------ AND
+        // 0001
+        int n = 0;
+        bool value;
+        unsigned int check = 0b0001;
+        for(auto pin : LEDS)
+        {
+            // n stelle von pattern ausmaskieren
+            value = check & pattern>>n; // bit shift to the right;
+            lgGpioWrite(m_handle, pin, value);
+            n++;
+        }
 }

@@ -5,6 +5,7 @@
 #include <QTcpServer>
 #include <QTcpSocket>
 #include "gpio.h"
+#include "config.h"
 
 class LedServer : public QObject
 {
